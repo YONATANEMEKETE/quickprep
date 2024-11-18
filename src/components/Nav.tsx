@@ -22,7 +22,7 @@ const Nav = () => {
           <Button
             variant={'outline'}
             size={'lg'}
-            className="group border-mytextlight hover:bg-transparent px-4 font-mynormal text-mytext rounded-full flex items-center gap-x-2"
+            className="group border-mytextlight bg-transparent hover:bg-myaccent05 px-4 font-mynormal text-mytext rounded-full flex items-center gap-x-2"
           >
             <GithubIcon />
             <p className="text-base group-hover:text-mytextlight">Star</p>
@@ -32,7 +32,7 @@ const Nav = () => {
           <Button
             variant={'outline'}
             size={'lg'}
-            className="group border-mytextlight  hover:bg-transparent px-4 font-mynormal text-mytext rounded-full flex items-center gap-x-2"
+            className="group border-mytextlight bg-transparent  hover:bg-myaccent05 px-4 font-mynormal text-mytext rounded-full flex items-center gap-x-2"
           >
             <LinkedinIcon />
             <p className="text-base group-hover:text-mytextlight">Connect</p>

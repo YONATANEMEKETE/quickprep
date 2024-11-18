@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Anek_Devanagari, Copse } from 'next/font/google';
 import Nav from '@/components/Nav';
+import { BgShapeOne } from '@/components/ui/bg-shapes';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -38,8 +40,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${anek.variable} ${copse.variable} antialiased min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} ${anek.variable} ${copse.variable} antialiased min-h-screen bg-myaccent05 bg-opacity-80`}
       >
+        <Toaster />
+        <BgShapeOne />
         <Nav />
         {children}
       </body>
