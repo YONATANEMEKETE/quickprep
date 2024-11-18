@@ -42,7 +42,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${anek.variable} ${copse.variable} antialiased min-h-screen bg-myaccent05 bg-opacity-80`}
       >
-        <Toaster />
+        <Toaster closeButton richColors />
         <BgShapeOne />
         <Nav />
         {children}

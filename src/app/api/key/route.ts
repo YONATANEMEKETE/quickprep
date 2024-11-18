@@ -1,5 +1,5 @@
 import { pinata } from '@/lib/pinata';
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {

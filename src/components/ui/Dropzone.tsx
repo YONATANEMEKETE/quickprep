@@ -26,11 +26,10 @@ export default function Dropzone() {
   };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setFiles((prev) => [...prev, ...acceptedFiles]);
-      files.forEach((file) => {
-        handleUpload(file);
-      });
+    if (acceptedFiles.length) {
+      acceptedFiles.forEach((file) => handleUpload(file));
+    } else {
+      alert('No files accepted');
     }
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
