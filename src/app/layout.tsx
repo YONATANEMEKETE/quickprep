@@ -5,6 +5,7 @@ import { Anek_Devanagari, Copse } from 'next/font/google';
 import Nav from '@/components/Nav';
 import { BgShapeOne } from '@/components/ui/bg-shapes';
 import { Toaster } from '@/components/ui/sonner';
+import Footer from '@/components/Footer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -46,6 +47,7 @@ export default function RootLayout({
         <BgShapeOne />
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

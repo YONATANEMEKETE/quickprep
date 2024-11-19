@@ -18,7 +18,7 @@ const Nav = () => {
         />
       </Link>
       <div className="flex items-center gap-x-2">
-        <a href="https://github.com/quickprep" target="_blank">
+        <a href="https://github.com/YONATANEMEKETE/quickprep" target="_blank">
           <Button
             variant={'outline'}
             size={'lg'}
@@ -28,7 +28,7 @@ const Nav = () => {
             <p className="text-base group-hover:text-mytextlight">Star</p>
           </Button>
         </a>
-        <a href="https://github.com/quickprep" target="_blank">
+        <a href="https://www.linkedin.com/in/yonatanemekete" target="_blank">
           <Button
             variant={'outline'}
             size={'lg'}
