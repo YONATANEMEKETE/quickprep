@@ -2,17 +2,18 @@
 
 import { pinata } from '@/lib/pinata';
 import { ArrowDown, CloudUpload, Loader } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import React, { use, useCallback, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import { Button } from './button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Dropzone() {
-  // const [files, setFiles] = useState<File[]>([]);
+  const [file, setFile] = useState<{ cid: string; name: string } | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
-  const [url, setUrl] = useState<string>('');
-
-  // console.log(url);
+  const router = useRouter();
 
   const handleUpload = async (file: File) => {
     try {
@@ -20,18 +21,10 @@ export default function Dropzone() {
       const keyRequest = await fetch('/api/key');
       const keyData = await keyRequest.json();
       const uploadedFile = await pinata.upload.file(file).key(keyData.JWT);
-      const urlRequest = await fetch('/api/sign', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cid: uploadedFile.cid }),
-      });
-      const url = await urlRequest.json();
+
       toast.success(`File ${uploadedFile.name} uploaded successfully`);
-      // console.log(url.urlOpts.cid);
-      setUrl(url.urlOpts.cid);
       setUploading(false);
+      setFile({ cid: uploadedFile.cid, name: uploadedFile.name });
     } catch (error) {
       setUploading(false);
       console.log(error);
@@ -42,6 +35,7 @@ export default function Dropzone() {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length) {
       acceptedFiles.forEach((file) => handleUpload(file));
+      setFile(null);
     }
   }, []);
 
@@ -93,21 +87,40 @@ export default function Dropzone() {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-y-6">
-              {uploading ? (
-                <>
-                  <Loader size={50} className="text-mytextlight animate-spin" />
-                  <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
-                    Uploading...
+            <div>
+              {file ? (
+                <div className="flex flex-col items-center gap-y-6">
+                  <Image
+                    src="https://img.icons8.com/external-vectorslab-flat-vectorslab/53/external-pdf-file-format-files-and-folders-vectorslab-flat-vectorslab.png"
+                    alt="Icon pdf"
+                    width={70}
+                    height={50}
+                  />
+                  <p className="text-center text-base text-myaccent5  font-semibold font-mynormal">
+                    {file.name}
                   </p>
-                </>
+                </div>
               ) : (
-                <>
-                  <CloudUpload size={50} className="text-mytextlight" />
-                  <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
-                    Drag and Drop or click to select files
-                  </p>
-                </>
+                <div className="flex flex-col items-center gap-y-6">
+                  {uploading ? (
+                    <>
+                      <Loader
+                        size={50}
+                        className="text-mytextlight animate-spin"
+                      />
+                      <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
+                        Uploading...
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <CloudUpload size={50} className="text-mytextlight" />
+                      <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
+                        Drag and Drop or click to select files
+                      </p>
+                    </>
+                  )}
+                </div>
               )}
             </div>
           )}
@@ -123,6 +136,11 @@ export default function Dropzone() {
       </div>
       <Button
         variant={'gooeyLeft'}
+        onClick={() => {
+          file
+            ? router.push(`/summery/${file.cid}`)
+            : toast.error('No file Uploaded. Please upload a file first.');
+        }}
         size={'lg'}
         className="w-full bg-gradient-to-br from-myaccent6 hover:from-myaccent5 to-myaccent7 hover:to-myaccent7 text-base text-white font-medium font-mynormal"
       >
