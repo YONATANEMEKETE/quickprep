@@ -6,14 +6,16 @@ export default async function Document({
   params: Promise<{ id: string }>;
 }) {
   const cid = (await params).id;
-  const data = await getFile(cid);
+  // const data = await getFile(cid);
 
-  console.log(data);
+  // generateDocument(data);
 
   return (
-    <div>
+    <div className="min-h-[70vh] relative grid place-content-center">
       <p>{cid}</p>
-      <a href={data}>View</a>
+      {/* <a href={data} target="_blank" download={data}>
+        View | Download
+      </a> */}
     </div>
   );
 }

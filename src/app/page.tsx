@@ -1,6 +1,7 @@
 import { BgShapeTwo } from '@/components/ui/bg-shapes';
-import { Button } from '@/components/ui/button';
 import Dropzone from '@/components/ui/Dropzone';
+
+export const revalidate = 60;
 
 export default function Home() {
   return (

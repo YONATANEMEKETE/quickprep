@@ -10,7 +10,7 @@ import { GithubIcon, LinkedinIcon } from './ui/Links';
 const Nav = () => {
   return (
     <Container className="h-20 flex items-center justify-between">
-      <Link href={'/'}>
+      <Link href={'/'} className="bg-white rounded-md">
         <Image
           src={quickpreplogo}
           alt="QuickPrep logo"

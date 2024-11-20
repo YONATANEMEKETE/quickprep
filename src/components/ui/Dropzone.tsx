@@ -74,8 +74,7 @@ export default function Dropzone() {
       <div className="flex flex-col items-center gap-y-4">
         <div
           {...getRootProps({
-            className:
-              'border-2 border-dashed border-myaccent3 rounded-md p-4 cursor-pointer w-[400px] h-[200px] flex flex-col justify-end pb-8 bg-myaccent05',
+            className: `border-2 border-dashed border-myaccent3 rounded-md p-4 cursor-pointer w-[400px] h-[200px] flex flex-col justify-end pb-8 bg-myaccent05`,
           })}
         >
           <input {...getInputProps()} />
@@ -144,7 +143,7 @@ export default function Dropzone() {
         size={'lg'}
         className="w-full bg-gradient-to-br from-myaccent6 hover:from-myaccent5 to-myaccent7 hover:to-myaccent7 text-base text-white font-medium font-mynormal"
       >
-        Summerize
+        Summarize
       </Button>
     </div>
   );
