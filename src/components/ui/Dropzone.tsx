@@ -9,6 +9,7 @@ import { Button } from './button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { uploadLocal } from '@/lib/uploadLocal';
 
 export default function Dropzone() {
   const [file, setFile] = useState<File | null>(null);
@@ -17,20 +18,21 @@ export default function Dropzone() {
   const [cid, setCid] = useState<string | null>(null);
   const router = useRouter();
 
-  console.log(url);
-
   const handleUpload = async (file: File) => {
     try {
       setUploading(true);
       const keyRequest = await fetch('/api/key');
       const keyData = await keyRequest.json();
       const uploadedFile = await pinata.upload.file(file).key(keyData.JWT);
-
-      toast.success(`File ${uploadedFile.name} uploaded successfully`);
-      setUploading(false);
       setFile(file);
-      setUrl(URL.createObjectURL(file));
+      if (file) {
+        const localFile = await uploadLocal(file);
+        if (localFile) {
+          toast.success(`File ${uploadedFile.name} uploaded successfully`);
+        }
+      }
       setCid(uploadedFile.cid);
+      setUploading(false);
     } catch (error) {
       setUploading(false);
       console.log(error);
@@ -70,9 +72,9 @@ export default function Dropzone() {
     onDropRejected: handleRejectedFiles,
     maxFiles: 1,
     maxSize: 2 * 1024 * 1024,
-    // accept: {
-    //   'application/pdf': ['.pdf'],
-    // },
+    accept: {
+      'application/pdf': ['.pdf'],
+    },
   });
 
   return (
@@ -80,7 +82,7 @@ export default function Dropzone() {
       <div className="flex flex-col items-center gap-y-4">
         <div
           {...getRootProps({
-            className: `border-2 border-dashed border-myaccent3 rounded-md p-4 cursor-pointer w-[400px] h-[200px] flex flex-col justify-end pb-8 bg-myaccent05`,
+            className: `border-2 border-dashed border-myaccent3 hover:border-myaccent5 rounded-md p-4 cursor-pointer w-[400px] h-[200px] flex flex-col justify-end pb-8 bg-myaccent05`,
           })}
         >
           <input {...getInputProps()} />
@@ -151,7 +153,6 @@ export default function Dropzone() {
       >
         Summarize
       </Button>
-      {url && <img src={url} alt="image" />}
     </div>
   );
 }
