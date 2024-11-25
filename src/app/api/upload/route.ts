@@ -81,6 +81,7 @@ export async function POST(request: Request): Promise<Response> {
           NextResponse.json({
             message: 'File uploaded successfully',
             filePath: `/uploads/${file.originalFilename}`,
+            name: `${file.originalFilename}`,
           })
         );
       });

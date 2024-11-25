@@ -1,12 +1,10 @@
 'use client';
 
-import { pinata } from '@/lib/pinata';
 import { ArrowDown, CloudUpload, Loader } from 'lucide-react';
 import React, { use, useCallback, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import { Button } from './button';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { uploadLocal } from '@/lib/uploadLocal';
@@ -15,23 +13,17 @@ export default function Dropzone() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
-  const [cid, setCid] = useState<string | null>(null);
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
     try {
       setUploading(true);
-      const keyRequest = await fetch('/api/key');
-      const keyData = await keyRequest.json();
-      const uploadedFile = await pinata.upload.file(file).key(keyData.JWT);
-      setFile(file);
-      if (file) {
-        const localFile = await uploadLocal(file);
-        if (localFile) {
-          toast.success(`File ${uploadedFile.name} uploaded successfully`);
-        }
+      const localFile = await uploadLocal(file);
+      if (localFile) {
+        setFile(file);
+        toast.success(`File ${file.name} uploaded successfully`);
+        setUrl(localFile.name);
       }
-      setCid(uploadedFile.cid);
       setUploading(false);
     } catch (error) {
       setUploading(false);
@@ -145,7 +137,7 @@ export default function Dropzone() {
         variant={'gooeyLeft'}
         onClick={() => {
           file
-            ? router.push(`/summery/${cid}`)
+            ? router.push(`/summery/${url}`)
             : toast.error('No file Uploaded. Please upload a file first.');
         }}
         size={'lg'}
@@ -153,6 +145,11 @@ export default function Dropzone() {
       >
         Summarize
       </Button>
+      {/* {url && (
+        <a href={url} download={`fakeD`}>
+          Download
+        </a>
+      )} */}
     </div>
   );
 }
