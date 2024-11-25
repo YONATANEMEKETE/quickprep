@@ -14,7 +14,7 @@ export default async function Document({
   return (
     <div className="min-h-[70vh] relative grid place-content-center">
       <p>{cid}</p>
-      <a href={data} target="_blank" download>
+      <a href={data} download={cid}>
         View | Download
       </a>
     </div>

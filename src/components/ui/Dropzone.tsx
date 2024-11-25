@@ -14,7 +14,10 @@ export default function Dropzone() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+  const [cid, setCid] = useState<string | null>(null);
   const router = useRouter();
+
+  console.log(url);
 
   const handleUpload = async (file: File) => {
     try {
@@ -26,7 +29,8 @@ export default function Dropzone() {
       toast.success(`File ${uploadedFile.name} uploaded successfully`);
       setUploading(false);
       setFile(file);
-      setUrl(uploadedFile.cid);
+      setUrl(URL.createObjectURL(file));
+      setCid(uploadedFile.cid);
     } catch (error) {
       setUploading(false);
       console.log(error);
@@ -66,9 +70,9 @@ export default function Dropzone() {
     onDropRejected: handleRejectedFiles,
     maxFiles: 1,
     maxSize: 2 * 1024 * 1024,
-    accept: {
-      'application/pdf': ['.pdf'],
-    },
+    // accept: {
+    //   'application/pdf': ['.pdf'],
+    // },
   });
 
   return (
@@ -139,7 +143,7 @@ export default function Dropzone() {
         variant={'gooeyLeft'}
         onClick={() => {
           file
-            ? router.push(`/summery/${url}`)
+            ? router.push(`/summery/${cid}`)
             : toast.error('No file Uploaded. Please upload a file first.');
         }}
         size={'lg'}
@@ -147,6 +151,7 @@ export default function Dropzone() {
       >
         Summarize
       </Button>
+      {url && <img src={url} alt="image" />}
     </div>
   );
 }
