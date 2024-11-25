@@ -11,8 +11,9 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function Dropzone() {
-  const [file, setFile] = useState<{ cid: string; name: string } | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [url, setUrl] = useState<string | null>(null);
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
@@ -24,7 +25,8 @@ export default function Dropzone() {
 
       toast.success(`File ${uploadedFile.name} uploaded successfully`);
       setUploading(false);
-      setFile({ cid: uploadedFile.cid, name: uploadedFile.name });
+      setFile(file);
+      setUrl(uploadedFile.cid);
     } catch (error) {
       setUploading(false);
       console.log(error);
@@ -137,7 +139,7 @@ export default function Dropzone() {
         variant={'gooeyLeft'}
         onClick={() => {
           file
-            ? router.push(`/summery/${file.cid}`)
+            ? router.push(`/summery/${url}`)
             : toast.error('No file Uploaded. Please upload a file first.');
         }}
         size={'lg'}
