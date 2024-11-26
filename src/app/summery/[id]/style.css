@@ -1,0 +1,8 @@
+.markdonw h1,
+h2 {
+  margin-bottom: 6px;
+  margin-top: 6px;
+  font-size: 28px;
+  color: black;
+  font-weight: medium;
+}

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from './ui/button';
 import { useCompletion } from 'ai/react';
+import Markdown from 'react-markdown';
 
 const Summary = ({ path }: { path: string }) => {
   const { complete, completion } = useCompletion({
@@ -12,11 +13,20 @@ const Summary = ({ path }: { path: string }) => {
 
   return (
     <div className="w-full pt-12">
-      <Button className="mb-6" onClick={() => complete(`Three.js`)}>
+      <Button
+        className="mb-6"
+        onClick={() => complete(`tell me the steps of cooking a chicken`)}
+      >
         Generate
       </Button>
 
-      <div>{completion}</div>
+      <Markdown
+        className={
+          'markdown text-base text-mytextlight font-main font-medium leading-loose'
+        }
+      >
+        {completion}
+      </Markdown>
     </div>
   );
 };

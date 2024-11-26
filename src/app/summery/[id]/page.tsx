@@ -1,6 +1,5 @@
 import Summary from '@/components/Summary';
-import { Button } from '@/components/ui/button';
-import Container from '@/components/ui/Container';
+import './style.css';
 
 export default async function Document({
   params,
