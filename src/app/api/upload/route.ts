@@ -66,7 +66,7 @@ export async function POST(request: Request): Promise<Response> {
         file.originalFilename
           ?.toLowerCase()
           .trim()
-          .replace(/ /g, '-')
+          .replace(/[\s\W-]+(?!\.)/g, '-')
           .replace(/^-+|-+$/g, '') || 'uploaded-file';
       const newFilePath = path.join(uploadDir, fileName);
 

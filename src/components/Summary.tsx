@@ -11,8 +11,9 @@ const Summary = ({ path }: { path: string }) => {
   });
 
   return (
-    <div className="max-w-[600px]">
-      <Button onClick={() => complete(`${path}`)}>Generate</Button>
+    <div className="w-full pt-12">
+      <Button onClick={() => complete(`Three.js`)}>Generate</Button>
+
       <div>{completion}</div>
     </div>
   );

@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 
 const Footer = () => {
   return (
-    <Container className="flex flex-col items-center justify-center pt-6 gap-y-2">
+    <div className="flex flex-col items-center justify-center pb-2 fixed bottom-0 w-full z-50 bg-myaccent05 bg-opacity-80">
       <div className="flex items-center">
         <p className="text-xs text-myaccent5 opacity-70 font-mynormal font-semibold cursor-pointer">
           Made With Love ❤ by
@@ -52,7 +52,7 @@ const Footer = () => {
           </Button>
         </a>
       </div>
-    </Container>
+    </div>
   );
 };
 
