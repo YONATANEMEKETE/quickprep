@@ -12,7 +12,9 @@ const Summary = ({ path }: { path: string }) => {
 
   return (
     <div className="w-full pt-12">
-      <Button onClick={() => complete(`Three.js`)}>Generate</Button>
+      <Button className="mb-6" onClick={() => complete(`Three.js`)}>
+        Generate
+      </Button>
 
       <div>{completion}</div>
     </div>

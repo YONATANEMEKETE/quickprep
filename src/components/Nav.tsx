@@ -9,8 +9,8 @@ import { GithubIcon, LinkedinIcon } from './ui/Links';
 
 const Nav = () => {
   return (
-    <div className=" fixed top-0 w-full z-50 bg-myaccent05 bg-opacity-80">
-      <Container className="h-20 flex items-center justify-between">
+    <div className="fixed top-0 w-full z-50 bg-white/30 backdrop-filter backdrop-blur-sm">
+      <Container className="h-16 flex items-center justify-between">
         <Link href={'/'} className="bg-white rounded-md">
           <Image
             src={quickpreplogo}
