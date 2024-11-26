@@ -6,6 +6,7 @@ import { useCompletion } from 'ai/react';
 import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 import useStream from '@/stores/streams';
+import CopyBtn from './ui/CopyBtn';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -67,13 +68,16 @@ const Note = ({ fileLocation, message }: StreamProps) => {
   }, []);
 
   return (
-    <Markdown
-      className={
-        'markdown text-base text-mytextlight font-main font-medium leading-loose'
-      }
-    >
-      {message || completion}
-    </Markdown>
+    <>
+      <Markdown
+        className={
+          'markdown text-base text-mytextlight font-main font-medium leading-loose'
+        }
+      >
+        {message || completion}
+      </Markdown>
+      {message && <CopyBtn content={message} />}
+    </>
   );
 };
 
@@ -92,12 +96,16 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
   }, []);
 
   return (
-    <Markdown
-      className={
-        'markdown text-base text-mytextlight font-main font-medium leading-loose'
-      }
-    >
-      {message || completion}
-    </Markdown>
+    <>
+      <Markdown
+        className={
+          'markdown text-base text-mytextlight font-main font-medium leading-loose'
+        }
+      >
+        {message || completion}
+      </Markdown>
+
+      {message && <CopyBtn content={message} />}
+    </>
   );
 };
