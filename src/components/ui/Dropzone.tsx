@@ -135,6 +135,7 @@ export default function Dropzone() {
       </div>
       <Button
         variant={'gooeyLeft'}
+        // disabled={file === null}
         onClick={() => {
           file
             ? router.push(`/summery/${url}`)
@@ -145,11 +146,6 @@ export default function Dropzone() {
       >
         Summarize
       </Button>
-      {/* {url && (
-        <a href={url} download={`fakeD`}>
-          Download
-        </a>
-      )} */}
     </div>
   );
 }

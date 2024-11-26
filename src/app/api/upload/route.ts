@@ -62,10 +62,13 @@ export async function POST(request: Request): Promise<Response> {
       }
 
       const file = files.file?.[0] as File; // Ensure correct type for file
-      const newFilePath = path.join(
-        uploadDir,
-        file.originalFilename || 'uploaded-file'
-      );
+      const fileName =
+        file.originalFilename
+          ?.toLowerCase()
+          .trim()
+          .replace(/ /g, '-')
+          .replace(/^-+|-+$/g, '') || 'uploaded-file';
+      const newFilePath = path.join(uploadDir, fileName);
 
       // Move file to target directory
       fs.rename(file.filepath, newFilePath, (err) => {
@@ -81,7 +84,7 @@ export async function POST(request: Request): Promise<Response> {
           NextResponse.json({
             message: 'File uploaded successfully',
             filePath: `/uploads/${file.originalFilename}`,
-            name: `${file.originalFilename}`,
+            name: `${fileName}`,
           })
         );
       });
