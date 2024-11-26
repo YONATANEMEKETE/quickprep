@@ -5,9 +5,11 @@ import { Button } from './ui/button';
 import { useCompletion } from 'ai/react';
 import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
+import useStream from '@/stores/streams';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
+  const { note, questions } = useStream();
 
   return (
     <div className="w-full pt-12 space-y-5">
@@ -35,22 +37,34 @@ const Summary = ({ path }: { path: string }) => {
           Questions
         </div>
       </div>
-      {displaying === 'note' ? <Note /> : <Questions />}
+      {displaying === 'note' ? (
+        <Note fileLocation={path} message={note} />
+      ) : (
+        <Questions fileLocation={path} message={questions} />
+      )}
     </div>
   );
 };
 
 export default Summary;
 
-const Note = () => {
+type StreamProps = {
+  fileLocation: string;
+  message: any;
+};
+
+const Note = ({ fileLocation, message }: StreamProps) => {
   const { complete, completion } = useCompletion({
     api: '/api/note',
-    // experimental_throttle: 1000,
+    onFinish(prompt, completion) {
+      changeNote(completion);
+    },
   });
+  const { changeNote } = useStream();
 
-  // useEffect(() => {
-  //   complete('step by step guide to cook a chicken.');
-  // }, []);
+  useEffect(() => {
+    !message && complete('step by step guide to cook a chicken.');
+  }, []);
 
   return (
     <Markdown
@@ -58,20 +72,24 @@ const Note = () => {
         'markdown text-base text-mytextlight font-main font-medium leading-loose'
       }
     >
-      {completion}
+      {message || completion}
     </Markdown>
   );
 };
 
-const Questions = () => {
+const Questions = ({ fileLocation, message }: StreamProps) => {
   const { complete, completion } = useCompletion({
-    api: '/api/note',
-    // experimental_throttle: 1000,
+    api: '/api/questions',
+    onFinish(prompt, completion) {
+      changeQuestions(completion);
+    },
   });
+  const { changeQuestions } = useStream();
 
-  // useEffect(() => {
-  //   complete('step by step guide to learn Git.');
-  // }, []);
+  useEffect(() => {
+    !message &&
+      complete('Generate a maximum of 10 questions with answer about Git.');
+  }, []);
 
   return (
     <Markdown
@@ -79,7 +97,7 @@ const Questions = () => {
         'markdown text-base text-mytextlight font-main font-medium leading-loose'
       }
     >
-      {completion}
+      {message || completion}
     </Markdown>
   );
 };
