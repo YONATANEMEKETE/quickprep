@@ -14,6 +14,11 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { deleteLocal } from '@/lib/deleteFile';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -119,6 +124,8 @@ const Note = ({ fileLocation, message }: StreamProps) => {
         </div>
       )}
       <Markdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
         }
@@ -189,6 +196,8 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
         </div>
       )}
       <Markdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
         }
