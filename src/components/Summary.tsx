@@ -6,14 +6,14 @@ import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 import useStream from '@/stores/streams';
 import CopyBtn from './ui/CopyBtn';
-import { Skeleton } from './ui/skeleton';
 import Image from 'next/image';
 import errorillustration from '../../public/Man reading-bro.svg';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { Loader, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { deleteLocal } from '@/lib/deleteFile';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -21,13 +21,13 @@ const Summary = ({ path }: { path: string }) => {
 
   return (
     <div className="w-full pt-12 flex flex-col gap-y-6 items-center">
-      <div className="h-10 border rounded-md w-[200px] flex items-center justify-between p-1">
+      <div className="h-10 border bg-gray-100 rounded-md w-[200px] flex items-center justify-between p-1">
         <div
           onClick={() => {
             setDisplaying('note');
           }}
           className={cn(
-            'h-8  w-[92px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-color duration-100',
+            'h-8  w-[92px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-color duration-100 ',
             displaying === 'note' && 'bg-myaccent6 text-white font-medium'
           )}
         >
@@ -82,7 +82,7 @@ const Note = ({ fileLocation, message }: StreamProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    !message && complete('step by step guide to cook a chicken.');
+    !message && complete(fileLocation);
   }, []);
 
   if (error) {
@@ -135,6 +135,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
     api: '/api/questions',
     onFinish(prompt, completion) {
       changeQuestions(completion);
+      deleteLocal(prompt);
     },
     onError(error) {
       toast.error('Error generating questions', {
@@ -151,8 +152,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    !message &&
-      complete('Generate a maximum of 10 questions with answer about Git.');
+    !message && complete(fileLocation);
   }, []);
 
   if (error) {

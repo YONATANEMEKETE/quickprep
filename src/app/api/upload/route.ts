@@ -60,13 +60,12 @@ export async function POST(request: Request): Promise<Response> {
         );
         return;
       }
-
       const file = files.file?.[0] as File; // Ensure correct type for file
       const fileName =
         file.originalFilename
           ?.toLowerCase()
           .trim()
-          .replace(/[\s\W-]+(?!\.)/g, '-')
+          .replace(/[^a-zA-Z0-9.]/g, '')
           .replace(/^-+|-+$/g, '') || 'uploaded-file';
       const newFilePath = path.join(uploadDir, fileName);
 
