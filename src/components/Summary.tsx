@@ -7,13 +7,19 @@ import { cn } from '@/lib/utils';
 import useStream from '@/stores/streams';
 import CopyBtn from './ui/CopyBtn';
 import { Skeleton } from './ui/skeleton';
+import Image from 'next/image';
+import errorillustration from '../../public/Man reading-bro.svg';
+import { Button } from './ui/button';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
   const { note, questions } = useStream();
 
   return (
-    <div className="w-full pt-12 space-y-5">
+    <div className="w-full pt-12 flex flex-col gap-y-6 items-center">
       <div className="h-10 border rounded-md w-[200px] flex items-center justify-between p-1">
         <div
           onClick={() => {
@@ -60,15 +66,45 @@ const Note = ({ fileLocation, message }: StreamProps) => {
     onFinish(prompt, completion) {
       changeNote(completion);
     },
+    onError(error) {
+      toast.error('Error generating note', {
+        action: {
+          label: 'Return to Home',
+          onClick: () => {
+            router.push('/');
+          },
+        },
+      });
+    },
   });
   const { changeNote } = useStream();
+  const router = useRouter();
 
   useEffect(() => {
     !message && complete('step by step guide to cook a chicken.');
   }, []);
 
   if (error) {
-    return <div></div>;
+    return (
+      <div className="pt-10 grid place-content-center space-y-2">
+        <Image
+          src={errorillustration}
+          alt="image of a man reading a book"
+          className="size-[300px]"
+        />
+        <p className="text-lg text-mytextlight font-mynormal font-semibold">
+          Oops! it seems like Something went wrong.
+        </p>
+        <Link href={'/'} className="w-full">
+          <Button
+            variant={'ringHover'}
+            className="text-base text-white font-main font-semibold w-full"
+          >
+            Return to Home
+          </Button>
+        </Link>
+      </div>
+    );
   }
 
   if (isLoading) {
@@ -86,7 +122,7 @@ const Note = ({ fileLocation, message }: StreamProps) => {
   }
 
   return (
-    <div>
+    <div className="space-y-4">
       <Markdown
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
@@ -105,13 +141,47 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
     onFinish(prompt, completion) {
       changeQuestions(completion);
     },
+    onError(error) {
+      toast.error('Error generating questions', {
+        action: {
+          label: 'Return to Home',
+          onClick: () => {
+            router.push('/');
+          },
+        },
+      });
+    },
   });
   const { changeQuestions } = useStream();
+  const router = useRouter();
 
   useEffect(() => {
     !message &&
       complete('Generate a maximum of 10 questions with answer about Git.');
   }, []);
+
+  if (error) {
+    return (
+      <div className="pt-10 grid place-content-center space-y-2">
+        <Image
+          src={errorillustration}
+          alt="image of a man reading a book"
+          className="size-[300px]"
+        />
+        <p className="text-lg text-mytextlight font-mynormal font-semibold">
+          Oops! it seems like Something went wrong.
+        </p>
+        <Link href={'/'} className="w-full">
+          <Button
+            variant={'ringHover'}
+            className="text-base text-white font-main font-semibold w-full"
+          >
+            Return to Home
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -128,7 +198,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
   }
 
   return (
-    <>
+    <div className="space-y-4">
       <Markdown
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
@@ -138,6 +208,6 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
       </Markdown>
 
       {message && <CopyBtn content={message} />}
-    </>
+    </div>
   );
 };

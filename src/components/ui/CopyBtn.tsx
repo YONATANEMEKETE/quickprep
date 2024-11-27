@@ -49,7 +49,7 @@ const CopyBtn = ({ content }: { content: any }) => {
           variant={'gooeyLeft'}
           className="bg-gradient-to-br from-myaccent5 to-myaccent7 text-sm text-white font-mynormal font-medium px-8"
         >
-          New
+          Return
         </Button>
       </Link>
     </div>
