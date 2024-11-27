@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from './ui/Container';
 import { Button } from './ui/button';
 
 const Footer = () => {

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import quickpreplogo from '../../public/logoquickprep.png';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { SiGithub } from 'react-icons/si';
 import { GithubIcon, LinkedinIcon } from './ui/Links';
 
 const Nav = () => {

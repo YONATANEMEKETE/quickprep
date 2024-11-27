@@ -13,6 +13,7 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { Loader, Loader2 } from 'lucide-react';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -107,22 +108,16 @@ const Note = ({ fileLocation, message }: StreamProps) => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6 pt-6">
-        <Skeleton className="h-6 w-[300px] rounded-md" />
-        <div className="space-y-2">
-          <Skeleton className="h-6 w-full rounded-md" />
-          <Skeleton className="h-6 w-[300px] rounded-md" />
-          <Skeleton className="h-6 w-[500px] rounded-md" />
-          <Skeleton className="h-6 w-[200px] rounded-md" />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
+      {isLoading && (
+        <div className="flex items-center gap-x-2">
+          <Loader2 className="animate-spin" />
+          <p className="text-sm text-mytextlight font-mynormal font-semibold">
+            Generating Note
+          </p>
+        </div>
+      )}
       <Markdown
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
@@ -183,22 +178,16 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6 pt-6">
-        <Skeleton className="h-6 w-[300px] rounded-md" />
-        <div className="space-y-2">
-          <Skeleton className="h-6 w-full rounded-md" />
-          <Skeleton className="h-6 w-[300px] rounded-md" />
-          <Skeleton className="h-6 w-[500px] rounded-md" />
-          <Skeleton className="h-6 w-[200px] rounded-md" />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
+      {isLoading && (
+        <div className="flex items-center gap-x-2">
+          <Loader2 className="animate-spin" />
+          <p className="text-sm text-mytextlight font-mynormal font-semibold">
+            Generating Questions
+          </p>
+        </div>
+      )}
       <Markdown
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
