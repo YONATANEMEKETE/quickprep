@@ -2,7 +2,7 @@ import React from 'react';
 
 const BgShapeOne = () => {
   return (
-    <div className="absolute -z-10 size-[600px] rounded-br-full opacity-10 -left-28 -top-28 bg-myaccent3 filter blur-3xl"></div>
+    <div className="fixed -z-10 size-[600px] rounded-br-full opacity-10 -left-28 -top-28 bg-myaccent3 filter blur-3xl"></div>
   );
 };
 

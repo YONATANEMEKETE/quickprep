@@ -33,7 +33,8 @@ const Summary = ({ path }: { path: string }) => {
           }}
           className={cn(
             'h-8  w-[92px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-color duration-100 ',
-            displaying === 'note' && 'bg-myaccent6 text-white font-medium'
+            displaying === 'note' &&
+              'bg-myaccent6 text-white font-medium shadow-md'
           )}
         >
           Note
@@ -44,7 +45,8 @@ const Summary = ({ path }: { path: string }) => {
           }}
           className={cn(
             'h-8  w-[90px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-acolor duration-100',
-            displaying === 'questions' && 'bg-myaccent6 text-white font-medium'
+            displaying === 'questions' &&
+              'bg-myaccent6 text-white font-medium shadow-md'
           )}
         >
           Questions
