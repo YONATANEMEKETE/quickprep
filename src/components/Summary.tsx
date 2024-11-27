@@ -6,6 +6,7 @@ import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 import useStream from '@/stores/streams';
 import CopyBtn from './ui/CopyBtn';
+import { Skeleton } from './ui/skeleton';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -54,7 +55,7 @@ type StreamProps = {
 };
 
 const Note = ({ fileLocation, message }: StreamProps) => {
-  const { complete, completion } = useCompletion({
+  const { complete, completion, isLoading, error } = useCompletion({
     api: '/api/note',
     onFinish(prompt, completion) {
       changeNote(completion);
@@ -66,8 +67,26 @@ const Note = ({ fileLocation, message }: StreamProps) => {
     !message && complete('step by step guide to cook a chicken.');
   }, []);
 
+  if (error) {
+    return <div></div>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 pt-6">
+        <Skeleton className="h-6 w-[300px] rounded-md" />
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-full rounded-md" />
+          <Skeleton className="h-6 w-[300px] rounded-md" />
+          <Skeleton className="h-6 w-[500px] rounded-md" />
+          <Skeleton className="h-6 w-[200px] rounded-md" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div>
       <Markdown
         className={
           'markdown text-base text-mytextlight font-main font-medium leading-loose'
@@ -76,12 +95,12 @@ const Note = ({ fileLocation, message }: StreamProps) => {
         {message || completion}
       </Markdown>
       {message && <CopyBtn content={message} />}
-    </>
+    </div>
   );
 };
 
 const Questions = ({ fileLocation, message }: StreamProps) => {
-  const { complete, completion } = useCompletion({
+  const { complete, completion, isLoading, error } = useCompletion({
     api: '/api/questions',
     onFinish(prompt, completion) {
       changeQuestions(completion);
@@ -93,6 +112,20 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
     !message &&
       complete('Generate a maximum of 10 questions with answer about Git.');
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 pt-6">
+        <Skeleton className="h-6 w-[300px] rounded-md" />
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-full rounded-md" />
+          <Skeleton className="h-6 w-[300px] rounded-md" />
+          <Skeleton className="h-6 w-[500px] rounded-md" />
+          <Skeleton className="h-6 w-[200px] rounded-md" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
