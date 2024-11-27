@@ -12,6 +12,7 @@
     "@ai-sdk/google": "^1.0.3",
     "@google/generative-ai": "^0.21.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
     "ai": "^4.0.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

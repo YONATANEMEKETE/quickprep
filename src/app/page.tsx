@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer';
 import { BgShapeTwo } from '@/components/ui/bg-shapes';
 import Dropzone from '@/components/ui/Dropzone';
 

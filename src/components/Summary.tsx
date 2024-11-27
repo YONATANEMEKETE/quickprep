@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { Button } from './ui/button';
+import React, { useEffect, useState } from 'react';
 import { useCompletion } from 'ai/react';
 import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
