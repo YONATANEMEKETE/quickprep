@@ -24,6 +24,7 @@ const anek = Anek_Devanagari({
 });
 
 const copse = Copse({
+  subsets: ['latin'],
   weight: ['400'],
   variable: '--normal-font',
 });
