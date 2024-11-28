@@ -1,5 +1,17 @@
 import Summary from '@/components/Summary';
 import './style.css';
+import { Metadata } from 'next';
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).id;
+  return {
+    title: `${id} | PDF Summary`,
+  };
+}
 
 export default async function Document({
   params,
