@@ -21,7 +21,7 @@ const CopyBtn = ({ content }: { content: any }) => {
   };
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center gap-x-2 ml-6 md:m-0">
       <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>

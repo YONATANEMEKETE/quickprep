@@ -3,7 +3,7 @@ import Dropzone from '@/components/ui/Dropzone';
 
 export default async function Home() {
   return (
-    <main className="relative min-h-screen flex flex-col items-center pt-44">
+    <main className="relative min-h-screen flex flex-col items-center justify-center  overflow-clip">
       <BgShapeTwo />
       <Dropzone />
     </main>

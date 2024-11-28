@@ -70,32 +70,32 @@ export default function Dropzone() {
   });
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6 max-w-[400px]">
       <div className="flex flex-col items-center gap-y-4">
         <div
           {...getRootProps({
-            className: `border-2 border-dashed border-myaccent3 hover:border-myaccent5 rounded-md p-4 cursor-pointer w-[400px] h-[200px] flex flex-col justify-end pb-8 bg-myaccent05`,
+            className: `border-2 border-dashed border-myaccent3 hover:border-myaccent5 rounded-md p-4 cursor-pointer w-[300px] md:w-[400px] h-[150px] md:h-[200px] flex flex-col justify-end pb-2 md:pb-8 bg-myaccent05`,
           })}
         >
           <input {...getInputProps()} />
           {isDragActive ? (
             <div className="flex flex-col items-center gap-y-6">
               <ArrowDown size={50} className="text-mytext animate-bounce" />
-              <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
+              <p className="text-center text-sm md:text-base text-mytextlight font-semibold font-mynormal">
                 Drop the File here
               </p>
             </div>
           ) : (
             <div>
               {file ? (
-                <div className="flex flex-col items-center gap-y-6">
+                <div className="flex flex-col items-center gap-y-2 md:gap-y-6">
                   <Image
                     src="https://img.icons8.com/external-vectorslab-flat-vectorslab/53/external-pdf-file-format-files-and-folders-vectorslab-flat-vectorslab.png"
                     alt="Icon pdf"
                     width={70}
                     height={50}
                   />
-                  <p className="text-center text-base text-myaccent5  font-semibold font-mynormal">
+                  <p className="text-center text-sm md:text-base text-myaccent5  font-semibold font-mynormal">
                     {file.name}
                   </p>
                 </div>
@@ -107,14 +107,14 @@ export default function Dropzone() {
                         size={50}
                         className="text-mytextlight animate-spin"
                       />
-                      <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
+                      <p className="text-center text-sm md:text-base text-mytextlight font-semibold font-mynormal">
                         Uploading...
                       </p>
                     </>
                   ) : (
                     <>
                       <CloudUpload size={50} className="text-mytextlight" />
-                      <p className="text-center text-base text-mytextlight font-semibold font-mynormal">
+                      <p className="text-center text-sm md:text-base text-mytextlight font-semibold font-mynormal">
                         Drag and Drop or click to select files
                       </p>
                     </>
@@ -125,10 +125,10 @@ export default function Dropzone() {
           )}
         </div>
         <div className="flex items-center justify-between w-full px-2">
-          <p className="text-sm text-mytextlight font-semibold font-mynormal">
+          <p className="text-xs md:text-sm text-mytextlight font-semibold font-mynormal">
             Supported Formats: .pdf
           </p>
-          <p className="text-sm text-mytextlight font-semibold font-mynormal">
+          <p className="text-xs md:text-sm text-mytextlight font-semibold font-mynormal">
             Max File Size: 2MB
           </p>
         </div>

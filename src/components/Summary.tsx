@@ -94,13 +94,13 @@ const Note = ({ fileLocation, message }: StreamProps) => {
 
   if (error) {
     return (
-      <div className="pt-10 grid place-content-center space-y-2">
+      <div className=" grid place-content-center space-y-2">
         <Image
           src={errorillustration}
           alt="image of a man reading a book"
           className="size-[300px]"
         />
-        <p className="text-lg text-mytextlight font-mynormal font-semibold">
+        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
           Oops! it seems like Something went wrong.
         </p>
         <Link href={'/'} className="w-full">
@@ -118,7 +118,7 @@ const Note = ({ fileLocation, message }: StreamProps) => {
   return (
     <div className="space-y-4 w-full">
       {isLoading && (
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 ml-6 md:ml-0 pb-10">
           <Loader2 className="animate-spin" />
           <p className="text-sm text-mytextlight font-mynormal font-semibold">
             Generating Note
@@ -129,7 +129,7 @@ const Note = ({ fileLocation, message }: StreamProps) => {
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
         className={
-          'markdown text-base text-mytextlight font-main font-medium leading-loose'
+          'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
         }
       >
         {message || completion}
@@ -166,13 +166,13 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
 
   if (error) {
     return (
-      <div className="pt-10 grid place-content-center space-y-2">
+      <div className="grid place-content-center space-y-2">
         <Image
           src={errorillustration}
           alt="image of a man reading a book"
           className="size-[300px]"
         />
-        <p className="text-lg text-mytextlight font-mynormal font-semibold">
+        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
           Oops! it seems like Something went wrong.
         </p>
         <Link href={'/'} className="w-full">
@@ -190,7 +190,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
   return (
     <div className="space-y-4 w-full">
       {isLoading && (
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 ml-6 md:m-0">
           <Loader2 className="animate-spin" />
           <p className="text-sm text-mytextlight font-mynormal font-semibold">
             Generating Questions
@@ -201,7 +201,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
         className={
-          'markdown text-base text-mytextlight font-main font-medium leading-loose'
+          'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
         }
       >
         {message || completion}

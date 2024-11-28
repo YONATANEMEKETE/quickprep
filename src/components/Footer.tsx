@@ -17,11 +17,11 @@ const Footer = () => {
         </a>
       </div>
 
-      <div className="flex items-center justify-center gap-x-5">
+      <div className="flex items-center flex-wrap justify-center md:gap-x-5 gap-x-2 gap-y-2">
         <a href="https://www.linkedin.com/in/yonatanemekete" target="_blank">
           <Button
             variant={'linkHover2'}
-            className="text-sm text-mytextlight font-mynormal font-semibold"
+            className="text-sm text-mytextlight font-mynormal font-semibold md:h-8 h-6"
           >
             LinkedIn
           </Button>
@@ -29,7 +29,7 @@ const Footer = () => {
         <a href="https://github.com/YONATANEMEKETE" target="_blank">
           <Button
             variant={'linkHover2'}
-            className="text-sm text-mytextlight font-mynormal font-semibold"
+            className="text-sm text-mytextlight font-mynormal font-semibold md:h-8 h-6"
           >
             Github
           </Button>
@@ -37,7 +37,7 @@ const Footer = () => {
         <a href="https://x.com/MeketeYona82296" target="_blank">
           <Button
             variant={'linkHover2'}
-            className="text-sm text-mytextlight font-mynormal font-semibold"
+            className="text-sm text-mytextlight font-mynormal font-semibold md:h-8 h-6"
           >
             X
           </Button>
@@ -45,7 +45,7 @@ const Footer = () => {
         <a href="https://t.me/yonatanemekete" target="_blank">
           <Button
             variant={'linkHover2'}
-            className="text-sm text-mytextlight font-mynormal font-semibold"
+            className="text-sm text-mytextlight font-mynormal font-semibold md:h-8 h-6"
           >
             Telegram
           </Button>

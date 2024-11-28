@@ -21,7 +21,7 @@ export default async function Document({
   const cid = (await params).id;
 
   return (
-    <section className="max-w-[700px] mx-auto min-h-[60vh] mt-16 mb-40">
+    <section className="max-w-[700px] mx-auto min-h-[60vh] pt-16 mb-40">
       <Summary path={cid} />
     </section>
   );
