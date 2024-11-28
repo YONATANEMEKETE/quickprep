@@ -46,7 +46,8 @@ export const metadata: Metadata = {
     title: 'QuickPrep | Generate Notes and Sample Questions',
     description:
       'Easily upload your PDF documents to create summarized notes and sample questions with AI assistance.',
-    url: 'https://quickprep.vercel.app',
+    images: 'https://ik.imagekit.io/6qizpphtd1/OgImages/QuickPrep.png',
+    url: 'https://quickprepp.vercel.app',
     locale: 'en_US',
     siteName: 'QuickPrep',
   },
