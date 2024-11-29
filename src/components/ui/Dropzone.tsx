@@ -8,22 +8,24 @@ import { Button } from './button';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { uploadLocal } from '@/lib/uploadLocal';
+import { configUrl } from '@/lib/configUrl';
+import useFile from '@/stores/file';
 
 export default function Dropzone() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+  const { changeFile } = useFile();
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
     try {
       setUploading(true);
-      const localFile = await uploadLocal(file);
-      if (localFile) {
-        setFile(file);
-        toast.success(`File ${file.name} uploaded successfully`);
-        setUrl(localFile.name);
-      }
+      const configedUrl = await configUrl(file.name);
+      setFile(file);
+      changeFile(file);
+      toast.success(`File ${file.name} uploaded successfully`);
+      setUrl(configedUrl);
       setUploading(false);
     } catch (error) {
       setUploading(false);
@@ -135,7 +137,6 @@ export default function Dropzone() {
       </div>
       <Button
         variant={'gooeyLeft'}
-        // disabled={file === null}
         onClick={() => {
           file
             ? router.push(`/summery/${url}`)

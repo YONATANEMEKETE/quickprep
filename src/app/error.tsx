@@ -1,5 +1,4 @@
-'use client'; // Error boundaries must be Client Components
-
+'use client';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 
