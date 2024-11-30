@@ -131,7 +131,7 @@ const Note = () => {
           'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
         }
       >
-        {note?.text}
+        {note?.text || 'this wea supposed to be text response'}
       </Markdown>
       {note && <CopyBtn content={note.text} />}
     </div>
