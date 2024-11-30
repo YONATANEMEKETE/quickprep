@@ -2,13 +2,13 @@ export async function uploadLocal(file: File) {
   const formData = new FormData();
   formData.append('file', file);
   try {
-    const response = await fetch('/api/upload', {
+    const response = await fetch('/api/generate', {
       method: 'POST',
       body: formData,
     });
     const data = await response.json();
     if (response.ok) {
-      console.log(data.filePath);
+      console.log(data);
       return data;
     } else {
       console.log(`error: ${data.error}`);

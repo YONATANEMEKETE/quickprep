@@ -19,6 +19,9 @@ import rehypeHighlight from 'rehype-highlight';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
+import useFile from '@/stores/file';
+import { useQuery } from '@tanstack/react-query';
+import { uploadLocal } from '@/lib/uploadLocal';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -52,11 +55,7 @@ const Summary = ({ path }: { path: string }) => {
           Questions
         </div>
       </div>
-      {displaying === 'note' ? (
-        <Note fileLocation={path} message={note} />
-      ) : (
-        <Questions fileLocation={path} message={questions} />
-      )}
+      {displaying === 'note' ? <Note /> : <Questions message={questions} />}
     </div>
   );
 };
@@ -64,35 +63,35 @@ const Summary = ({ path }: { path: string }) => {
 export default Summary;
 
 type StreamProps = {
-  fileLocation: string;
   message: any;
 };
 
-const Note = ({ fileLocation, message }: StreamProps) => {
-  const { complete, completion, isLoading, error } = useCompletion({
-    api: '/api/note',
-    onFinish(prompt, completion) {
-      changeNote(completion);
-    },
-    onError(error) {
-      toast.error('Error generating note', {
-        action: {
-          label: 'Return to Home',
-          onClick: () => {
-            router.push('/');
-          },
-        },
-      });
+const Note = () => {
+  const { file } = useFile();
+  const {
+    data: note,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['file', file],
+    queryFn: async () => {
+      const data = await uploadLocal(file!);
+      return data;
     },
   });
-  const { changeNote } = useStream();
+
   const router = useRouter();
 
-  useEffect(() => {
-    !message && complete(fileLocation);
-  }, []);
+  if (isError) {
+    toast.error('Error generating Note', {
+      action: {
+        label: 'Return to Home',
+        onClick: () => {
+          router.push('/');
+        },
+      },
+    });
 
-  if (error) {
     return (
       <div className=" grid place-content-center space-y-2">
         <Image
@@ -117,8 +116,8 @@ const Note = ({ fileLocation, message }: StreamProps) => {
 
   return (
     <div className="space-y-4 w-full">
-      {isLoading && (
-        <div className="flex items-center gap-x-2 ml-6 md:ml-0 pb-10">
+      {isPending && (
+        <div className="flex items-center justify-center gap-x-2 ml-6 md:ml-0 pb-10 w-full">
           <Loader2 className="animate-spin" />
           <p className="text-sm text-mytextlight font-mynormal font-semibold">
             Generating Note
@@ -132,14 +131,14 @@ const Note = ({ fileLocation, message }: StreamProps) => {
           'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
         }
       >
-        {message || completion}
+        {note?.text}
       </Markdown>
-      {message && <CopyBtn content={message} />}
+      {note && <CopyBtn content={note.text} />}
     </div>
   );
 };
 
-const Questions = ({ fileLocation, message }: StreamProps) => {
+const Questions = ({ message }: StreamProps) => {
   const { complete, completion, isLoading, error } = useCompletion({
     api: '/api/questions',
     onFinish(prompt, completion) {
@@ -161,7 +160,7 @@ const Questions = ({ fileLocation, message }: StreamProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    !message && complete(fileLocation);
+    !message && complete('');
   }, []);
 
   if (error) {

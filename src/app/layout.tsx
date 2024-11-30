@@ -7,6 +7,7 @@ import { BgShapeOne } from '@/components/ui/bg-shapes';
 import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
 import { Analytics } from '@vercel/analytics/react';
+import QueryProvider from '@/components/QueryProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -76,7 +77,7 @@ export default function RootLayout({
         <Toaster closeButton richColors />
         <BgShapeOne />
         <Nav />
-        {children}
+        <QueryProvider>{children}</QueryProvider>
         <Analytics />
         <Footer />
       </body>

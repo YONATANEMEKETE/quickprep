@@ -137,7 +137,7 @@ export default function Dropzone() {
       </div>
       <Button
         variant={'gooeyLeft'}
-        onClick={() => {
+        onClick={async () => {
           file
             ? router.push(`/summery/${url}`)
             : toast.error('No file Uploaded. Please upload a file first.');
