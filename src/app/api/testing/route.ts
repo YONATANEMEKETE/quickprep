@@ -91,7 +91,12 @@ export async function POST(request: Request): Promise<Response> {
           ],
         });
 
-        resolve(NextResponse.json({ message: 'File processed successfully' }));
+        resolve(
+          NextResponse.json({
+            message: 'File processed successfully',
+            text: result.text,
+          })
+        );
       } catch (error) {
         console.error('Error processing file:', error);
         resolve(
