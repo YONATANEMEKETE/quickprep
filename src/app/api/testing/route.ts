@@ -72,9 +72,24 @@ export async function POST(request: Request): Promise<Response> {
       try {
         fs.renameSync(uploadedFile.filepath, tempPath);
 
-        const fileContent = fs.readFileSync(tempPath, 'utf8');
-
-        console.log('File content:');
+        // generate note
+        console.log('file Proccessing Start now!');
+        const result = await generateText({
+          model: google('gemini-1.5-flash'),
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: 'what is the file about?' },
+                {
+                  type: 'file',
+                  mimeType: 'application/pdf',
+                  data: fs.readFileSync(tempPath),
+                },
+              ],
+            },
+          ],
+        });
 
         resolve(NextResponse.json({ message: 'File processed successfully' }));
       } catch (error) {
