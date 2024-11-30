@@ -53,45 +53,43 @@ export async function POST(request: Request): Promise<Response> {
         );
         return;
       }
-      const file = files.file?.[0] as File; // Ensure correct type for file
+      const uploadedFile = files.file?.[0] as File; // Ensure correct type for file
       const fileName =
-        file.originalFilename
+        uploadedFile?.originalFilename
           ?.toLowerCase()
           .trim()
           .replace(/[^a-zA-Z0-9.]/g, '')
           .replace(/^-+|-+$/g, '') || 'uploaded-file';
 
-      const tempFilePath = file.filepath; // temp file path in the server
-      console.log('file Uploaded to', tempFilePath);
+      const isProd = process.env.NODE_ENV === 'production';
+      const tempDir = isProd ? '/tmp' : path.join(process.cwd(), 'tmp');
 
-      console.log('file Proccessing Start now!');
-      const result = await generateText({
-        model: google('gemini-1.5-flash'),
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: 'what is the file about?' },
-              {
-                type: 'file',
-                mimeType: 'application/pdf',
-                data: fs.readFileSync(tempFilePath),
-              },
-            ],
-          },
-        ],
-      });
-      console.log('file Proccessed', result.text);
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+      const tempPath = path.join(tempDir, fileName);
 
-      fs.unlinkSync(tempFilePath);
-      console.log('file Cleaned Up');
+      try {
+        fs.renameSync(uploadedFile.filepath, tempPath);
 
-      resolve(
-        NextResponse.json({
-          message: 'File uploaded and Processed successfully',
-          text: result.text,
-        })
-      );
+        const fileContent = fs.readFileSync(tempPath, 'utf8');
+
+        console.log('File content:');
+
+        resolve(NextResponse.json({ message: 'File processed successfully' }));
+      } catch (error) {
+        console.error('Error processing file:', error);
+        resolve(
+          NextResponse.json(
+            { error: 'File processing failed' },
+            { status: 500 }
+          )
+        );
+      } finally {
+        if (fs.existsSync(tempPath)) {
+          fs.unlinkSync(tempPath);
+        }
+      }
     });
   });
 }
