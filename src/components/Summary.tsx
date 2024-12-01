@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useCompletion } from 'ai/react';
+import React, { useState } from 'react';
 import Markdown from 'react-markdown';
 import { cn } from '@/lib/utils';
-import useStream from '@/stores/streams';
 import CopyBtn from './ui/CopyBtn';
 import Image from 'next/image';
 import errorillustration from '../../public/Man reading-bro.svg';
@@ -13,7 +11,6 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { deleteLocal } from '@/lib/deleteFile';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import remarkMath from 'remark-math';
@@ -25,7 +22,6 @@ import { uploadLocal } from '@/lib/uploadLocal';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
-  const { note, questions } = useStream();
 
   return (
     <div className="w-full pt-12 flex flex-col gap-y-6 items-center">
@@ -55,16 +51,12 @@ const Summary = ({ path }: { path: string }) => {
           Questions
         </div>
       </div>
-      {displaying === 'note' ? <Note /> : <Questions message={questions} />}
+      {displaying === 'note' ? <Note /> : <Note />}
     </div>
   );
 };
 
 export default Summary;
-
-type StreamProps = {
-  message: any;
-};
 
 const Note = () => {
   const { file } = useFile();
@@ -131,82 +123,82 @@ const Note = () => {
           'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
         }
       >
-        {note?.text || 'this wea supposed to be text response'}
+        {note?.text}
       </Markdown>
       {note && <CopyBtn content={note.text} />}
     </div>
   );
 };
 
-const Questions = ({ message }: StreamProps) => {
-  const { complete, completion, isLoading, error } = useCompletion({
-    api: '/api/questions',
-    onFinish(prompt, completion) {
-      changeQuestions(completion);
-      deleteLocal(prompt);
-    },
-    onError(error) {
-      toast.error('Error generating questions', {
-        action: {
-          label: 'Return to Home',
-          onClick: () => {
-            router.push('/');
-          },
-        },
-      });
-    },
-  });
-  const { changeQuestions } = useStream();
-  const router = useRouter();
+// const Questions = ({ message }: StreamProps) => {
+//   const { complete, completion, isLoading, error } = useCompletion({
+//     api: '/api/questions',
+//     onFinish(prompt, completion) {
+//       changeQuestions(completion);
+//       deleteLocal(prompt);
+//     },
+//     onError(error) {
+//       toast.error('Error generating questions', {
+//         action: {
+//           label: 'Return to Home',
+//           onClick: () => {
+//             router.push('/');
+//           },
+//         },
+//       });
+//     },
+//   });
+//   const { changeQuestions } = useStream();
+//   const router = useRouter();
 
-  useEffect(() => {
-    !message && complete('');
-  }, []);
+//   useEffect(() => {
+//     !message && complete('');
+//   }, []);
 
-  if (error) {
-    return (
-      <div className="grid place-content-center space-y-2">
-        <Image
-          src={errorillustration}
-          alt="image of a man reading a book"
-          className="size-[300px]"
-        />
-        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
-          Oops! it seems like Something went wrong.
-        </p>
-        <Link href={'/'} className="w-full">
-          <Button
-            variant={'ringHover'}
-            className="text-base text-white font-main font-semibold w-full"
-          >
-            Return to Home
-          </Button>
-        </Link>
-      </div>
-    );
-  }
+//   if (error) {
+//     return (
+//       <div className="grid place-content-center space-y-2">
+//         <Image
+//           src={errorillustration}
+//           alt="image of a man reading a book"
+//           className="size-[300px]"
+//         />
+//         <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
+//           Oops! it seems like Something went wrong.
+//         </p>
+//         <Link href={'/'} className="w-full">
+//           <Button
+//             variant={'ringHover'}
+//             className="text-base text-white font-main font-semibold w-full"
+//           >
+//             Return to Home
+//           </Button>
+//         </Link>
+//       </div>
+//     );
+//   }
 
-  return (
-    <div className="space-y-4 w-full">
-      {isLoading && (
-        <div className="flex items-center gap-x-2 ml-6 md:m-0">
-          <Loader2 className="animate-spin" />
-          <p className="text-sm text-mytextlight font-mynormal font-semibold">
-            Generating Questions
-          </p>
-        </div>
-      )}
-      <Markdown
-        remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-        className={
-          'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
-        }
-      >
-        {message || completion}
-      </Markdown>
+//   return (
+//     <div className="space-y-4 w-full">
+//       {isLoading && (
+//         <div className="flex items-center gap-x-2 ml-6 md:m-0">
+//           <Loader2 className="animate-spin" />
+//           <p className="text-sm text-mytextlight font-mynormal font-semibold">
+//             Generating Questions
+//           </p>
+//         </div>
+//       )}
+//       <Markdown
+//         remarkPlugins={[remarkMath]}
+//         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+//         className={
+//           'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
+//         }
+//       >
+//         {message || completion}
+//       </Markdown>
 
-      {message && <CopyBtn content={message} />}
-    </div>
-  );
-};
+//       {message && <CopyBtn content={message} />}
+//     </div>
+//   );
+// };
