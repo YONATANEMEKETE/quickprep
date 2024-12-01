@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 import { Button } from './button';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { uploadLocal } from '@/lib/uploadNote';
 import { configUrl } from '@/lib/configUrl';
 import useFile from '@/stores/file';
 
