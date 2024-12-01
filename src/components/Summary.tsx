@@ -71,11 +71,15 @@ const Note = () => {
       const data = await uploadLocal(file!);
       return data;
     },
+    refetchOnWindowFocus: false,
+    gcTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
+    refetchOnMount: false,
   });
 
   const router = useRouter();
 
-  if (isError) {
+  if (isError || !note?.text) {
     toast.error('Error generating Note', {
       action: {
         label: 'Return to Home',
