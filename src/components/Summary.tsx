@@ -19,12 +19,13 @@ import 'katex/dist/katex.min.css';
 import useFile from '@/stores/file';
 import { useQuery } from '@tanstack/react-query';
 import { uploadLocal } from '@/lib/uploadLocal';
+import { Skeleton } from './ui/skeleton';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
 
   return (
-    <div className="w-full pt-12 flex flex-col gap-y-6 items-center">
+    <div className="w-full pt-12 flex flex-col gap-y-12 items-center">
       <div className="h-10 border bg-gray-100 rounded-md w-[200px] flex items-center justify-between p-1">
         <div
           onClick={() => {
@@ -106,16 +107,22 @@ const Note = () => {
     );
   }
 
+  if (isPending) {
+    return (
+      <div className="w-full space-y-6 px-6">
+        <Skeleton className="h-6 w-56 rounded-md" />
+        <div className="w-full space-y-2">
+          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-3/4 rounded-md" />
+          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-1/2 rounded-md" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 w-full">
-      {isPending && (
-        <div className="flex items-center justify-center gap-x-2 ml-6 md:ml-0 pb-10 w-full">
-          <Loader2 className="animate-spin" />
-          <p className="text-sm text-mytextlight font-mynormal font-semibold">
-            Generating Note
-          </p>
-        </div>
-      )}
       <Markdown
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
