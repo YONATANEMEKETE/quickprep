@@ -1,8 +1,8 @@
-export async function uploadLocal(file: File) {
+export async function uploadNote(file: File) {
   const formData = new FormData();
   formData.append('file', file);
   try {
-    const response = await fetch('/api/testing', {
+    const response = await fetch('/api/note', {
       method: 'POST',
       body: formData,
     });

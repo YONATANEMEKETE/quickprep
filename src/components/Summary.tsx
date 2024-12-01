@@ -18,8 +18,9 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import useFile from '@/stores/file';
 import { useQuery } from '@tanstack/react-query';
-import { uploadLocal } from '@/lib/uploadLocal';
+import { uploadNote } from '@/lib/uploadNote';
 import { Skeleton } from './ui/skeleton';
+import { uploadQuestions } from '@/lib/uploadQuestions';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -52,7 +53,7 @@ const Summary = ({ path }: { path: string }) => {
           Questions
         </div>
       </div>
-      {displaying === 'note' ? <Note /> : <Note />}
+      {displaying === 'note' ? <Note /> : <Questions />}
     </div>
   );
 };
@@ -66,9 +67,9 @@ const Note = () => {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['file', file],
+    queryKey: ['note', file],
     queryFn: async () => {
-      const data = await uploadLocal(file!);
+      const data = await uploadNote(file!);
       return data;
     },
     refetchOnWindowFocus: false,
@@ -141,75 +142,84 @@ const Note = () => {
   );
 };
 
-// const Questions = ({ message }: StreamProps) => {
-//   const { complete, completion, isLoading, error } = useCompletion({
-//     api: '/api/questions',
-//     onFinish(prompt, completion) {
-//       changeQuestions(completion);
-//       deleteLocal(prompt);
-//     },
-//     onError(error) {
-//       toast.error('Error generating questions', {
-//         action: {
-//           label: 'Return to Home',
-//           onClick: () => {
-//             router.push('/');
-//           },
-//         },
-//       });
-//     },
-//   });
-//   const { changeQuestions } = useStream();
-//   const router = useRouter();
+const Questions = () => {
+  const { file } = useFile();
+  const {
+    data: questions,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['questions', file],
+    queryFn: async () => {
+      const data = await uploadQuestions(file!);
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    gcTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
+    refetchOnMount: false,
+  });
 
-//   useEffect(() => {
-//     !message && complete('');
-//   }, []);
+  const router = useRouter();
 
-//   if (error) {
-//     return (
-//       <div className="grid place-content-center space-y-2">
-//         <Image
-//           src={errorillustration}
-//           alt="image of a man reading a book"
-//           className="size-[300px]"
-//         />
-//         <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
-//           Oops! it seems like Something went wrong.
-//         </p>
-//         <Link href={'/'} className="w-full">
-//           <Button
-//             variant={'ringHover'}
-//             className="text-base text-white font-main font-semibold w-full"
-//           >
-//             Return to Home
-//           </Button>
-//         </Link>
-//       </div>
-//     );
-//   }
+  if (isError) {
+    toast.error('Error generating Note', {
+      action: {
+        label: 'Return to Home',
+        onClick: () => {
+          router.push('/');
+        },
+      },
+    });
 
-//   return (
-//     <div className="space-y-4 w-full">
-//       {isLoading && (
-//         <div className="flex items-center gap-x-2 ml-6 md:m-0">
-//           <Loader2 className="animate-spin" />
-//           <p className="text-sm text-mytextlight font-mynormal font-semibold">
-//             Generating Questions
-//           </p>
-//         </div>
-//       )}
-//       <Markdown
-//         remarkPlugins={[remarkMath]}
-//         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-//         className={
-//           'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
-//         }
-//       >
-//         {message || completion}
-//       </Markdown>
+    return (
+      <div className=" grid place-content-center space-y-2">
+        <Image
+          src={errorillustration}
+          alt="image of a man reading a book"
+          className="size-[300px]"
+        />
+        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
+          Oops! it seems like Something went wrong.
+        </p>
+        <Link href={'/'} className="w-full">
+          <Button
+            variant={'ringHover'}
+            className="text-base text-white font-main font-semibold w-full"
+          >
+            Return to Home
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
-//       {message && <CopyBtn content={message} />}
-//     </div>
-//   );
-// };
+  if (isPending) {
+    return (
+      <div className="w-full space-y-6 px-6">
+        <Skeleton className="h-6 w-56 rounded-md" />
+        <div className="w-full space-y-2">
+          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-3/4 rounded-md" />
+          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-1/2 rounded-md" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4 w-full">
+      <Markdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+        className={
+          'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
+        }
+      >
+        {questions?.text}
+      </Markdown>
+      {questions && <CopyBtn content={questions.text} />}
+    </div>
+  );
+};
