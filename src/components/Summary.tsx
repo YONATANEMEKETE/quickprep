@@ -79,7 +79,7 @@ const Note = () => {
 
   const router = useRouter();
 
-  if (isError || !note?.text) {
+  if (isError) {
     toast.error('Error generating Note', {
       action: {
         label: 'Return to Home',
