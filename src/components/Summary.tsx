@@ -10,7 +10,6 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import remarkMath from 'remark-math';
@@ -21,6 +20,7 @@ import { useQuery } from '@tanstack/react-query';
 import { uploadNote } from '@/lib/uploadNote';
 import { Skeleton } from './ui/skeleton';
 import { uploadQuestions } from '@/lib/uploadQuestions';
+import { motion } from 'framer-motion';
 
 const Summary = ({ path }: { path: string }) => {
   const [displaying, setDisplaying] = useState<string>('note');
@@ -33,27 +33,37 @@ const Summary = ({ path }: { path: string }) => {
             setDisplaying('note');
           }}
           className={cn(
-            'h-8  w-[92px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-color duration-100 ',
-            displaying === 'note' &&
-              'bg-myaccent6 text-white font-medium shadow-md'
+            'relative h-8  w-[92px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-color duration-300',
+            displaying === 'note' && ' text-white font-medium'
           )}
         >
-          Note
+          {displaying === 'note' && (
+            <motion.div
+              layoutId="background"
+              className="absolute inset-0 rounded-md bg-myaccent6 z-0"
+            ></motion.div>
+          )}
+          <p className="relative">Note</p>
         </div>
         <div
           onClick={() => {
             setDisplaying('questions');
           }}
           className={cn(
-            'h-8  w-[90px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-acolor duration-100',
-            displaying === 'questions' &&
-              'bg-myaccent6 text-white font-medium shadow-md'
+            'relative h-8  w-[90px] grid place-content-center rounded-md  text-base text-mytext font-mynormal font-semibold cursor-pointer transition-acolor duration-300',
+            displaying === 'questions' && ' text-white font-medium'
           )}
         >
-          Questions
+          {displaying === 'questions' && (
+            <motion.div
+              layoutId="background"
+              className="absolute inset-0 rounded-md bg-myaccent6 z-0"
+            ></motion.div>
+          )}
+          <p className="relative">Questions</p>
         </div>
       </div>
-      {displaying === 'note' ? <Note /> : <Questions />}
+      {/* {displaying === 'note' ? <Note /> : <Questions />} */}
     </div>
   );
 };
