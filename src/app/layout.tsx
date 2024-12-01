@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
 import { Analytics } from '@vercel/analytics/react';
 import QueryProvider from '@/components/QueryProvider';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -78,6 +79,7 @@ export default function RootLayout({
         <BgShapeOne />
         <Nav />
         <QueryProvider>{children}</QueryProvider>
+        <SpeedInsights />
         <Analytics />
         <Footer />
       </body>
