@@ -63,7 +63,7 @@ const Summary = ({ path }: { path: string }) => {
           <p className="relative">Questions</p>
         </div>
       </div>
-      {/* {displaying === 'note' ? <Note /> : <Questions />} */}
+      {displaying === 'note' ? <Note /> : <Questions />}
     </div>
   );
 };
