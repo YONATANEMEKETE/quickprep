@@ -79,37 +79,44 @@ const Note = () => {
   } = useQuery({
     queryKey: ['note', file],
     queryFn: async () => {
-      const data = await uploadNote(file!);
+      const data = file && (await uploadNote(file!));
       return data;
     },
     refetchOnWindowFocus: false,
-    gcTime: 1000 * 60 * 10,
-    staleTime: 1000 * 60 * 10,
+    gcTime: Infinity,
+    staleTime: Infinity,
     refetchOnMount: false,
   });
 
   const router = useRouter();
 
-  if (isError) {
-    toast.error('Error generating Note', {
-      action: {
-        label: 'Return to Home',
-        onClick: () => {
-          router.push('/');
+  if ((isError || !note) && !isPending) {
+    if (isError || !!note) {
+      toast.error('Error generating Note', {
+        action: {
+          label: 'Return to Home',
+          onClick: () => {
+            router.push('/');
+          },
         },
-      },
-    });
+      });
+    }
 
     return (
-      <div className=" grid place-content-center space-y-2">
+      <div className=" grid place-content-center space-y-4">
         <Image
           src={errorillustration}
           alt="image of a man reading a book"
           className="size-[300px]"
         />
-        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
-          Oops! it seems like Something went wrong.
-        </p>
+        <div>
+          <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
+            Oops! it seems like Something went wrong.
+          </p>
+          <p className="text-center text-sm md:text-base text-mytextlight font-mynormal font-semibold">
+            please upload your file again.
+          </p>
+        </div>
         <Link href={'/'} className="w-full">
           <Button
             variant={'ringHover'}
@@ -137,18 +144,20 @@ const Note = () => {
   }
 
   return (
-    <div className="space-y-4 w-full">
-      <Markdown
-        remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-        className={
-          'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
-        }
-      >
-        {note?.text}
-      </Markdown>
-      {note && <CopyBtn content={note.text} />}
-    </div>
+    <>
+      <div className="space-y-4 w-full">
+        <Markdown
+          remarkPlugins={[remarkMath]}
+          rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+          className={
+            'markdown text-sm sm:text-base text-mytextlight font-main font-medium leading-loose px-6 md:px-0'
+          }
+        >
+          {note?.text}
+        </Markdown>
+        {note && <CopyBtn content={note.text} />}
+      </div>
+    </>
   );
 };
 
@@ -172,26 +181,33 @@ const Questions = () => {
 
   const router = useRouter();
 
-  if (isError) {
-    toast.error('Error generating Note', {
-      action: {
-        label: 'Return to Home',
-        onClick: () => {
-          router.push('/');
+  if ((isError || !questions) && !isPending) {
+    if (isError || !!questions) {
+      toast.error('Error generating Note', {
+        action: {
+          label: 'Return to Home',
+          onClick: () => {
+            router.push('/');
+          },
         },
-      },
-    });
+      });
+    }
 
     return (
-      <div className=" grid place-content-center space-y-2">
+      <div className=" grid place-content-center space-y-4">
         <Image
           src={errorillustration}
           alt="image of a man reading a book"
           className="size-[300px]"
         />
-        <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
-          Oops! it seems like Something went wrong.
-        </p>
+        <div>
+          <p className="text-base md:text-lg text-mytextlight font-mynormal font-semibold">
+            Oops! it seems like Something went wrong.
+          </p>
+          <p className="text-center text-sm md:text-base text-mytextlight font-mynormal font-semibold">
+            please upload your file again.
+          </p>
+        </div>
         <Link href={'/'} className="w-full">
           <Button
             variant={'ringHover'}
