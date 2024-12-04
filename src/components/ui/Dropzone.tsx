@@ -53,7 +53,7 @@ export default function Dropzone() {
         (file) => file.errors[0].code === 'file-too-large'
       );
       if (fileTooLarge) {
-        toast.error('File can only be 2MB or less');
+        toast.error('File can only be 500kb or less');
         return;
       }
 
@@ -64,7 +64,7 @@ export default function Dropzone() {
     onDrop,
     onDropRejected: handleRejectedFiles,
     maxFiles: 1,
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 0.5 * 1024 * 1024,
     accept: {
       'application/pdf': ['.pdf'],
     },
